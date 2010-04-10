@@ -1,3 +1,5 @@
+This is the original documentation: see HOWTO.txt for a brief new version
+
 This README contains instructions how to get PhoneGap running on Maemo environment.
 
 Restructured text (reST) format is used for rich-text formatting in this file.

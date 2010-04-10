@@ -1,4 +1,6 @@
-
+=================================================================================================
+Rather than fork the original ( http://github.com/jtoivola/phonegap ) this is a new repo, since
+the differences were too great - largely because this one is Maemo-only.
 =================================================================================================
 
 Get set up with Maemo SDK @ http://wiki.maemo.org/Documentation/Maemo5_Final_Installation
