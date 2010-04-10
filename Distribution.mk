@@ -31,7 +31,7 @@ DESCRIPTION=${BINARY}.txt
 # PyPackager target
 DISTRIBUTION_FOLDER=distribution/data
 # Must be absolute
-PACKAGE_DIR = /scratchbox/users/user/home/user/phonegap/maemo/distribution
+PACKAGE_DIR = /scratchbox/users/user/home/user/phonegap-maemo-webgl/distribution
 DISTRIBUTION_GZ=${BINARY}-${VERSION}.tar.gz
 FULLNAME=Mikko Ohtamaa
 EMAIL=mikko.ohtamaa@twinapex.com
