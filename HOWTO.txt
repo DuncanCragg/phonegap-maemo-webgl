@@ -67,11 +67,6 @@ Building ARM binaries and package
 
  $ make clean
  $ qmake
-
- * edit in Makefile (only if device has QT 4.5 and 4.6 alongside):
-
-     LFLAGS = -Wl,-rpath-link,/opt/qt4-maemo5/lib -Wl,-rpath-link,/usr/lib -Wl,-O1 -Wl,--hash-style=gnu -Wl,-rpath,/opt/qt4-maemo5/lib -Wl,-rpath,/usr/lib
-
  $ make
  $ make -f Distribution.mk   # Make sure ARCH is armel in Distribution.mk
 

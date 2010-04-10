@@ -10,6 +10,10 @@ INCLUDEPATH += /usr/include/dbus-1.0/
 INCLUDEPATH += /usr/include/glib-2.0/
 INCLUDEPATH += .
 
+LIBS += -lX11 -lEGL -lGLESv2
+QMAKE_LFLAGS += -Wl,-rpath-link,/opt/qt4-maemo5/lib -Wl,-rpath,/opt/qt4-maemo5/lib
+
+
 # Input
 SOURCES += main.cpp \
     deviceinfo.cpp \

@@ -1,0 +1,18 @@
+
+----------------------------------------------------------
+
+Get X86 includes/libs from PVR SDK:
+
+SDKPackage/Builds/OGLES2/Include/EGL
+SDKPackage/Builds/OGLES2/Include/GLES2
+SDKPackage/Builds/OGLES2/Include/KHR
+SDKPackage/Builds/OGLES2/LinuxPC/Lib/libGLESv2.so
+SDKPackage/Builds/OGLES2/LinuxPC/Lib/libEGL.so
+
+copy include/{EGL,GLES2,KHR} -> /usr/include/
+copy libEGL/GLESv2           -> /usr/lib/
+
+ln -s /usr/lib/libtiff.so.4 /usr/lib/libtiff.so.3
+
+----------------------------------------------------------
+
