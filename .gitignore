@@ -1,0 +1,9 @@
+.DS_Store
+.*.sw?
+*.cso
+tmp/
+*.o
+moc_*
+phonegap
+*.pyc
+.scons*
