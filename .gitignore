@@ -4,6 +4,7 @@
 tmp/
 *.o
 moc_*
+Makefile
 phonegap
 *.pyc
 .scons*
