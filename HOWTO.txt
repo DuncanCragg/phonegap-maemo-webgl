@@ -68,8 +68,8 @@ Building ARM binaries and package
  $ make clean
  $ qmake
  $ make
- $ make -f Distribution.mk   # Make sure ARCH is armel in Distribution.mk
 
+ $ make -f Distribution.mk   # Make sure ARCH is armel in Distribution.mk
  $ dpkg-deb -c distribution/phonegapdemo_1.0.0_armel.deb   # optional: see files
  $ dpkg     -i distribution/phonegapdemo_1.0.0_armel.deb   # optional: try installing
 

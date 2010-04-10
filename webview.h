@@ -10,6 +10,7 @@
 #include "debug.h"
 #include "accelerometer.h"
 #include "notification.h"
+#include "gles2.h"
 
 namespace PhoneGap {
 
@@ -31,6 +32,7 @@ private:
      Debug *iDebug;
      Accelerometer *iAccelerometer;
      Notification *iNotification;
+     GLES2 *iGLES2;
 };
 
 }

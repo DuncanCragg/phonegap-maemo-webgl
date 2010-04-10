@@ -30,6 +30,9 @@ void WebView::initJavascript( )
 
     iNotification = new Notification( );
     frame->addToJavaScriptWindowObject(s("_NativeNotification"), iNotification);
+
+    iGLES2 = new GLES2(this);
+    frame->addToJavaScriptWindowObject(s("_NativeGLES2"), iGLES2);
 }
 
 
@@ -46,5 +49,6 @@ WebView::~WebView()
     delete iDebug;
     delete iAccelerometer;
     delete iNotification;
+    delete iGLES2;
 }
 

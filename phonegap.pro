@@ -20,6 +20,7 @@ SOURCES += main.cpp \
     webview.cpp \
     debug.cpp \
     accelerometer.cpp \
+    gles2.cpp \
     notification.cpp
 QT += webkit
 
@@ -30,5 +31,6 @@ HEADERS += commandmanager.h \
     utils.h \
     debug.h \
     accelerometer.h \
+    gles2.h \
     notification.h
 OTHER_FILES += index.html

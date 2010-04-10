@@ -71,17 +71,9 @@ const char fragment_src [] =
              + atan(pos.y,pos.x) - phase );            \
    }                                                   \
 ";
-//  some more formulas to play with...
-//      cos( 20.*(pos.x*pos.x + pos.y*pos.y) - phase );
-//      cos( 20.*sqrt(pos.x*pos.x + pos.y*pos.y) + atan(pos.y,pos.x) - phase );
-//      cos( 30.*sqrt(pos.x*pos.x + 1.5*pos.y*pos.y - 1.8*pos.x*pos.y*pos.y)
-//            + atan(pos.y,pos.x) - phase );
 
 
-void
-print_shader_info_log (
-   GLuint  shader      // handle to the shader
-)
+void print_shader_info_log ( GLuint  shader)
 {
    GLint  length;
 
@@ -100,11 +92,7 @@ print_shader_info_log (
 }
 
 
-GLuint
-load_shader (
-   const char  *shader_source,
-   GLenum       type
-)
+GLuint load_shader(const char  *shader_source, GLenum type)
 {
    GLuint  shader = glCreateShader( type );
 
@@ -153,23 +141,17 @@ void  render()
    static float  phase = 0;
    static int    donesetup = 0;
 
-   static XWindowAttributes gwa;
-
-   //// draw
-
    if ( !donesetup ) {
-      XWindowAttributes  gwa;
-      XGetWindowAttributes ( x_display , win , &gwa );
-      glViewport ( 0 , 0 , gwa.width , gwa.height );
-      glClearColor ( 0.08 , 0.06 , 0.07 , 1.);    // background color
+      glViewport ( 0 , 0 , 800, 480 );
+      glClearColor ( 0.08 , 0.06 , 0.07 , 1.);
       donesetup = 1;
    }
    glClear ( GL_COLOR_BUFFER_BIT );
 
-   glUniform1f ( phase_loc , phase );  // write the value of phase to the shaders phase
-   phase  =  fmodf ( phase + 0.5f , 2.f * 3.141f );    // and update the local variable
+   glUniform1f ( phase_loc , phase );
+   phase  =  fmodf ( phase + 0.5f , 2.f * 3.141f );
 
-   if ( update_pos ) {  // if the position of the texture has changed due to user action
+   if ( update_pos ) {
       GLfloat old_offset_x  =  offset_x;
       GLfloat old_offset_y  =  offset_y;
 
@@ -191,31 +173,24 @@ void  render()
    glEnableVertexAttribArray ( position_loc );
    glDrawArrays ( GL_TRIANGLE_STRIP, 0, 5 );
 
-   eglSwapBuffers ( egl_display, egl_surface );  // get the rendered buffer to the screen
+   eglSwapBuffers ( egl_display, egl_surface );
 }
 
 
-////////////////////////////////////////////////////////////////////////////////////////////
-
-
-int  mainGL()
+int getX11Display()
 {
-   ///////  the X11 part  //////////////////////////////////////////////////////////////////
-   // in the first part the program opens a connection to the X11 window manager
-   //
-
-   x_display = XOpenDisplay ( NULL );   // open the standard display (the primary screen)
+   x_display = XOpenDisplay ( NULL );
    if ( x_display == NULL ) {
       cerr << "cannot connect to X server" << endl;
-      return 1;
+      return 0;
    }
 
-   Window root  =  DefaultRootWindow( x_display );   // get the root window (usually the whole screen)
+   Window root  =  DefaultRootWindow( x_display );
 
    XSetWindowAttributes  swa;
    swa.event_mask  =  ExposureMask | PointerMotionMask | KeyPressMask;
 
-   win  =  XCreateWindow (   // create a window with the provided parameters
+   win  =  XCreateWindow (
               x_display, root,
               0, 0, 800, 480,   0,
               CopyFromParent, InputOutput,
@@ -242,10 +217,9 @@ int  mainGL()
       XA_INTEGER,  32,  PropModeReplace,
       (unsigned char*) &one,  1);
 
-   XMapWindow ( x_display , win );             // make the window visible on the screen
-   XStoreName ( x_display , win , "GL test" ); // give the window a name
+   XMapWindow ( x_display , win );
+   XStoreName ( x_display , win , "GL test" );
 
-   //// get identifiers for the provided atom name strings
    Atom wm_state   = XInternAtom ( x_display, "_NET_WM_STATE", False );
    Atom fullscreen = XInternAtom ( x_display, "_NET_WM_STATE_FULLSCREEN", False );
 
@@ -258,31 +232,30 @@ int  mainGL()
    xev.xclient.format       = 32;
    xev.xclient.data.l[0]    = 1;
    xev.xclient.data.l[1]    = fullscreen;
-   XSendEvent (                // send an event mask to the X-server
+   XSendEvent (
       x_display,
       DefaultRootWindow ( x_display ),
       False,
       SubstructureNotifyMask,
       &xev );
 
+   return 1;
+}
 
-   ///////  the egl part  //////////////////////////////////////////////////////////////////
-   //  egl provides an interface to connect the graphics related functionality of openGL ES
-   //  with the windowing interface and functionality of the native operation system (X11
-   //  in our case.
-
+int setUpEGL()
+{
    egl_display  =  eglGetDisplay( (EGLNativeDisplayType) x_display );
    if ( egl_display == EGL_NO_DISPLAY ) {
       cerr << "Got no EGL display." << endl;
-      return 1;
+      return 0;
    }
 
    if ( !eglInitialize( egl_display, NULL, NULL ) ) {
       cerr << "Unable to initialize EGL" << endl;
-      return 1;
+      return 0;
    }
 
-   EGLint attr[] = {       // some attributes to set up our egl-interface
+   EGLint attr[] = {
       EGL_BUFFER_SIZE, 16,
       EGL_RENDERABLE_TYPE,
       EGL_OPENGL_ES2_BIT,
@@ -293,21 +266,20 @@ int  mainGL()
    EGLint     num_config;
    if ( !eglChooseConfig( egl_display, attr, &ecfg, 1, &num_config ) ) {
       cerr << "Failed to choose config (eglError: " << eglGetError() << ")" << endl;
-      return 1;
+      return 0;
    }
 
    if ( num_config != 1 ) {
       cerr << "Didn't get exactly one config, but " << num_config << endl;
-      return 1;
+      return 0;
    }
 
    egl_surface = eglCreateWindowSurface ( egl_display, ecfg, (void*)win, NULL );
    if ( egl_surface == EGL_NO_SURFACE ) {
       cerr << "Unable to create EGL surface (eglError: " << eglGetError() << ")" << endl;
-      return 1;
+      return 0;
    }
 
-   //// egl-contexts collect all state descriptions needed required for operation
    EGLint ctxattr[] = {
       EGL_CONTEXT_CLIENT_VERSION, 2,
       EGL_NONE
@@ -315,86 +287,75 @@ int  mainGL()
    egl_context = eglCreateContext ( egl_display, ecfg, EGL_NO_CONTEXT, ctxattr );
    if ( egl_context == EGL_NO_CONTEXT ) {
       cerr << "Unable to create EGL context (eglError: " << eglGetError() << ")" << endl;
-      return 1;
+      return 0;
    }
 
-   //// associate the egl-context with the egl-surface
    eglMakeCurrent( egl_display, egl_surface, egl_surface, egl_context );
 
+   return 1;
+}
 
-   ///////  the openGL part  ///////////////////////////////////////////////////////////////
+int goGL()
+{
+   GLuint vertexShader   = load_shader ( vertex_src , GL_VERTEX_SHADER  );
+   GLuint fragmentShader = load_shader ( fragment_src , GL_FRAGMENT_SHADER );
 
-   GLuint vertexShader   = load_shader ( vertex_src , GL_VERTEX_SHADER  );     // load vertex shader
-   GLuint fragmentShader = load_shader ( fragment_src , GL_FRAGMENT_SHADER );  // load fragment shader
+   GLuint shaderProgram  = glCreateProgram ();
+   glAttachShader ( shaderProgram, vertexShader );
+   glAttachShader ( shaderProgram, fragmentShader );
 
-   GLuint shaderProgram  = glCreateProgram ();                 // create program object
-   glAttachShader ( shaderProgram, vertexShader );             // and attach both...
-   glAttachShader ( shaderProgram, fragmentShader );           // ... shaders to it
+   glLinkProgram ( shaderProgram );
+   glUseProgram  ( shaderProgram );
 
-   glLinkProgram ( shaderProgram );    // link the program
-   glUseProgram  ( shaderProgram );    // and select it for usage
-
-   //// now get the locations (kind of handle) of the shaders variables
    position_loc  = glGetAttribLocation  ( shaderProgram , "position" );
    phase_loc     = glGetUniformLocation ( shaderProgram , "phase"    );
    offset_loc    = glGetUniformLocation ( shaderProgram , "offset"   );
    if ( position_loc < 0  ||  phase_loc < 0  ||  offset_loc < 0 ) {
       cerr << "Unable to get uniform location" << endl;
-      return 1;
+      return 0;
    }
+   return 1;
+}
 
 
-   const float
-      window_width  = 800.0,
-      window_height = 480.0;
+bool GLPass()
+{
+   bool ok = true;
 
-   //// this is needed for time measuring  -->  frames per second
-   struct  timezone  tz;
-   timeval  t1, t2;
-   gettimeofday ( &t1 , &tz );
-   int  num_frames = 0;
+   const float window_width  = 800.0;
+   const float window_height = 480.0;
 
-   bool quit = false;
-   while ( !quit ) {    // the main loop
-
-      while ( XPending ( x_display ) ) {   // check for events from the x-server
+   while(XPending(x_display)){
 
          XEvent  xev;
          XNextEvent( x_display, &xev );
 
-         if ( xev.type == MotionNotify ) {  // if mouse has moved
-//            cout << "move to: << xev.xmotion.x << "," << xev.xmotion.y << endl;
+         if ( xev.type == MotionNotify ){
             GLfloat window_y  =  (window_height - xev.xmotion.y) - window_height / 2.0;
             norm_y            =  window_y / (window_height / 2.0);
             GLfloat window_x  =  xev.xmotion.x - window_width / 2.0;
             norm_x            =  window_x / (window_width / 2.0);
             update_pos = true;
          }
-
-         if ( xev.type == KeyPress )   quit = true;
-      }
-
-      render();   // now we finally put something on the screen
-
-      if ( ++num_frames % 100 == 0 ) {
-         gettimeofday( &t2, &tz );
-         float dt  =  t2.tv_sec - t1.tv_sec + (t2.tv_usec - t1.tv_usec) * 1e-6;
-         cout << "fps: " << num_frames / dt << endl;
-         num_frames = 0;
-         t1 = t2;
-      }
-//      usleep( 1000*10 );
+         if ( xev.type == KeyPress )   ok = false;
    }
 
+   render();
 
-   ////  cleaning up...
+   return ok;
+}
+
+void cleanUpEGL()
+{
    eglDestroyContext ( egl_display, egl_context );
    eglDestroySurface ( egl_display, egl_surface );
    eglTerminate      ( egl_display );
-   XDestroyWindow    ( x_display, win );
-   XCloseDisplay     ( x_display );
+}
 
-   return 0;
+void cleanUpX11()
+{
+   XDestroyWindow( x_display, win );
+   XCloseDisplay( x_display );
 }
 
 int main(int argc, char *argv[])
@@ -407,36 +368,28 @@ int main(int argc, char *argv[])
     window.setWindowTitle("PhoneGap");
     window.show();
 
-    // Construct the web view components
     WebView *view = new WebView(&window);
 
-    // Set our custom page with better error reporting
-    // Has to be dynamically allocated because the QWebView deletes this.
     PGWebPage* page = new PGWebPage();
     view->setPage(page);
 
-    // Enable JS
     view->settings()->setAttribute(QWebSettings::JavascriptEnabled, TRUE);
 
     PGNetworkAccessManager mymanager(view);
     page->setNetworkAccessManager(&mymanager);
 
-    // Initialize PhoneGap APIs
     view->initPhoneGapAPI();
     
-    // It's 2:00 AM and I am getting tired with this...
     QFile *file = new QFile("www/index.html");
     QUrl *url = new QUrl("file:///www/index.html");
 
     if (!file->open(QIODevice::ReadOnly | QIODevice::Text)) {
          std::cout << "No local index.html - trying global" << std::endl;
-
 	 file = new QFile("/usr/share/" BINARY_NAME "/www/index.html");
 	 if (!file->open(QIODevice::ReadOnly | QIODevice::Text)) {
 		std::cout << "No bootstrap JS - giving up" << std::endl;
 		return 1;
 	 }
-
 	 url = new QUrl("file:////usr/share/" BINARY_NAME "/www/index.html");
     }
 
@@ -445,5 +398,14 @@ int main(int argc, char *argv[])
     view->setHtml( in.readAll(),  *url);
     view->show();
 
-    return mainGL(); //app.exec();
+    if(!getX11Display()) return 0;
+    if(!setUpEGL())      return 0;
+    if(!goGL())          return 0;
+
+    app.exec();
+
+    cleanUpEGL();
+    cleanUpX11();
+
+    return 1;
 }

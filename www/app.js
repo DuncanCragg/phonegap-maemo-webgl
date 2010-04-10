@@ -8,5 +8,7 @@ __PG_ACCELEROMETER_CALLBACK_USER=null;__PG_ACCELEROMETER_CALLBACK=function(x,y,z
 Accelerometer.prototype.getCurrentAcceleration=function(successCallback,errorCallback,options){if(typeof successCallback=="function"){_NativeAccelerometer.get();__PG_ACCELEROMETER_CALLBACK_USER=successCallback;}}
 Accelerometer.prototype.watchAcceleration=function(successCallback,errorCallback,options){this.getCurrentAcceleration(successCallback,errorCallback,options);var frequency=(options!=undefined)?options.frequency:10000;return setInterval(function(){navigator.accelerometer.getCurrentAcceleration(successCallback,errorCallback,options);},frequency);}
 Accelerometer.prototype.clearWatch=function(watchId){clearInterval(watchId);}
-if(typeof navigator.accelerometer=="undefined")navigator.accelerometer=new Accelerometer();function Notification(){}
+if(typeof navigator.accelerometer=="undefined")navigator.accelerometer=new Accelerometer();function GLES2(){}
+GLES2.prototype.pass=function(){_NativeGLES2.pass();}
+if(typeof navigator.gles2=="undefined")navigator.gles2=new GLES2();function Notification(){}
 Notification.prototype.alert=function(message,title,buttonLabel){_NativeNotification.alert(message,title,buttonLabel);};Notification.prototype.activityStart=function(){};Notification.prototype.activityStop=function(){};Notification.prototype.blink=function(count,colour){};Notification.prototype.vibrate=function(mills){};Notification.prototype.beep=function(count,volume){};if(typeof navigator.notification=="undefined")navigator.notification=new Notification();
