@@ -5,7 +5,7 @@ the differences were too great - largely because this one is Maemo-only.
 
 Get set up with Maemo SDK @ http://wiki.maemo.org/Documentation/Maemo5_Final_Installation
 
- $ cd /scratchbox/users/<you>/home/<you>/phonegap-maemo-webgl
+ $ cd /scratchbox/users/<you>/home/<you>
  $ git clone git://github.com/DuncanCragg/phonegap-maemo-webgl.git
  $ sudo apt-get install scons
 
