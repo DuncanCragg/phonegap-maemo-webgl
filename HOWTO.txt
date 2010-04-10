@@ -1,0 +1,127 @@
+
+=================================================================================================
+
+Get set up with Maemo SDK @ http://wiki.maemo.org/Documentation/Maemo5_Final_Installation
+
+ $ cd /scratchbox/users/<you>/home/<you>/phonegap-maemo-webgl
+ $ git clone git://github.com/DuncanCragg/phonegap-maemo-webgl.git
+ $ sudo apt-get install scons
+
+ * in Distribution.mk: PACKAGE_DIR = /scratchbox/users/<you>/home/<you>/phonegap-maemo-webgl/distribution
+
+-------------------------------------------------------------------------------------------------
+
+ $ /scratchbox/login
+ $ cd phonegap-maemo-webgl
+
+ $ fakeroot apt-get update
+ $ fakeroot apt-get dist-upgrade
+ $ fakeroot apt-get install libqt4-dev libqt4-phonon libqt4-opengl libqt4-sql-sqlite
+
+-------------------------------------------------------------------------------------------------
+
+ $ /scratchbox/login
+ $ sb-conf se FREMANTLE_ARMEL
+ $ cd phonegap-maemo-webgl
+
+ $ fakeroot apt-get update
+ $ fakeroot apt-get dist-upgrade
+ $ fakeroot apt-get install libqt4-dev libqt4-phonon libqt4-opengl libqt4-sql-sqlite gawk sharutils
+
+-------------------------------------------------------------------------------------------------
+
+ * Run Maemo SDK Desktop shortcut, or:
+ $ Xephyr :2 -host-cursor -screen 800x480x16 -dpi 96 -ac -kb
+ $ export DISPLAY=:2 af-sb-init.sh start
+
+=================================================================================================
+
+Building X86 phonegap
+
+ $ /scratchbox/login
+ $ sb-conf se FREMANTLE_X86   # if not already
+ $ cd phonegap-maemo-webgl    # if not already
+
+ $ make clean
+ $ qmake
+ $ make
+
+ $ run-standalone.sh ./phonegap
+
+-------------------------------------------------------------------------------------------------
+Recompile Javascript when changed, outside the SDK
+
+ $ cd /scratchbox/users/<you>/home/<you>/phonegap-maemo-webgl
+ $ scons
+ $ rm phonegap.js; mv app.js www
+
+=================================================================================================
+
+Building ARM binaries and package
+
+ $ /scratchbox/login
+ $ sb-conf se FREMANTLE_ARMEL
+ $ cd phonegap-maemo-webgl
+
+ $ make clean
+ $ qmake
+
+ * edit in Makefile (only if device has QT 4.5 and 4.6 alongside):
+
+     LFLAGS = -Wl,-rpath-link,/opt/qt4-maemo5/lib -Wl,-rpath-link,/usr/lib -Wl,-O1 -Wl,--hash-style=gnu -Wl,-rpath,/opt/qt4-maemo5/lib -Wl,-rpath,/usr/lib
+
+ $ make
+ $ make -f Distribution.mk   # Make sure ARCH is armel in Distribution.mk
+
+ $ dpkg-deb -c distribution/phonegapdemo_1.0.0_armel.deb   # optional: see files
+ $ dpkg     -i distribution/phonegapdemo_1.0.0_armel.deb   # optional: try installing
+
+-------------------------------------------------------------------------------------------------
+
+Install on the device
+ 
+ $ sudo gainroot
+ $ apt-get install libqt4-webkit libqt4-xmlpatterns libqt4-maemo5-maemo5 (get 4.6 if not there; also libqt4-maemo5-gui?)
+
+ $ dpkg -i phonegapdemo_1.0.0_armel.deb
+ $ phonegapdemo   # if you want to see debug output - alerts look wrong - otherwise get a shortcut
+
+=================================================================================================
+
+Building X86 binaries and package - to test packaging without changing to ARMEL
+
+ $ make clean
+ $ qmake
+ $ make
+ $ make -f Distribution.mk   # Change ARCH from ARMEL to i386 in Distribution.mk
+ $ dpkg-deb -c distribution/phonegapdemo_1.0.0_i386.deb
+ $ dpkg     -i distribution/phonegapdemo_1.0.0_i386.deb
+ $ run-standalone.sh /usr/bin/phonegapdemo
+
+-------------------------------------------------------------------------------------------------
+
+Building your own application
+
+ * Create a copy of Distribution.mk
+ * Edit headers as you see necessary for your application
+ * Create copy of phonegapdemo.desktop
+ * Edit main.cpp – change BINARY_NAME
+
+-------------------------------------------------------------------------------------------------
+
+Additional resources
+
+ * help http://wiki.forum.nokia.com/index.php/Maemo_5_SDK_installation_for_beginners#Nokia_binaries_for_ARM_.28ARMEL.29
+ * http://wiki.maemo.org/Packaging_a_Qt_application
+ * http://tldp.org/HOWTO/Debian-Binary-Package-Building-HOWTO/x60.html
+
+-------------------------------------------------------------------------------------------------
+
+Notes
+
+ * index.html is bootstrapped by main.cpp in QWebView
+ * DO NOT RUN sb-menu setup target – this will screw your scratchbox installation
+
+=================================================================================================
+
+
