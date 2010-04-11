@@ -1,7 +1,7 @@
 
 var PhoneGap={}
 PhoneGap.addConstructor=function(func)
-{func();};function Device(){this.available=true;this.platform=DeviceInfo.platform;this.version=DeviceInfo.version;this.name=DeviceInfo.name;this.gap=DeviceInfo.gap;this.uuid=DeviceInfo.uuid;}
+{func();};function Device(){this.available=true;try{this.platform=DeviceInfo.platform;this.version=DeviceInfo.version;this.name=DeviceInfo.name;this.gap=DeviceInfo.gap;this.uuid=DeviceInfo.uuid;}catch(e){}}
 navigator.Device=window.Device=window.device=new Device();function Accelerometer(){this.lastAcceleration=null;}
 __PG_ACCELEROMETER_CALLBACK_USER=null;__PG_ACCELEROMETER_CALLBACK=function(x,y,z)
 {var accel={x:x,y:y,z:z};__PG_ACCELEROMETER_CALLBACK_USER(accel);Accelerometer.lastAcceleration=accel;}

@@ -15,7 +15,7 @@ QMAKE_LFLAGS += -Wl,-rpath-link,/opt/qt4-maemo5/lib -Wl,-rpath,/opt/qt4-maemo5/l
 
 
 # Input
-SOURCES += main.cpp \
+SOURCES += main.cpp NativeExample.cpp \
     deviceinfo.cpp \
     webview.cpp \
     debug.cpp \
