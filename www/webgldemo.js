@@ -48,17 +48,22 @@ function preventBehavior(e) { e.preventDefault(); };
  
 //-------------WebGL--------------------------------------------------------
 
-function glLoop(){
-    for(var x=0; x<20; x++) navigator.gles2.pass();
-}
-
 var gl;
-function initGL(canvas) {
+
+function initGL() {
+    var w,h;
     try {
-      gl = canvas.getContext("experimental-webgl");
-      gl.viewport(0, 0, canvas.width, canvas.height);
+        var canvas = document.getElementById("webgl-canvas");
+        gl = canvas.getContext("experimental-webgl");
+        w=canvas.width; h=canvas.height;
     } catch(e) { }
-    if (!gl)  alert("Could not initialise WebGL");
+    if(!gl){ try{
+        gl = navigator.gles2;
+        w=800; h=480;
+    } catch(e) { } }
+    if(!gl){ alert("Could not initialise WebGL"); return; }
+
+    gl.viewport(0, 0, w, h);
 }
 
 function getShader(gl, id) {
@@ -97,12 +102,17 @@ function getShader(gl, id) {
 
 
 var shaderProgram;
+var position_loc;
+var phase_loc;
+var offset_loc;
+
 function initShaders() {
 
-    var fragmentShader = getShader(gl, "shader-fs");
     var vertexShader   = getShader(gl, "shader-vs");
+    var fragmentShader = getShader(gl, "shader-fs");
 
     shaderProgram = gl.createProgram();
+
     gl.attachShader(shaderProgram, vertexShader);
     gl.attachShader(shaderProgram, fragmentShader);
     gl.linkProgram(shaderProgram);
@@ -125,10 +135,6 @@ var offset_y  =  0.0;
 var p1_pos_x  =  0.0;
 var p1_pos_y  =  0.0;
 
-var position_loc;
-var phase_loc;
-var offset_loc;
-
 function initBuffers() {
     vertexPositionBuffer = gl.createBuffer();
     gl.bindBuffer(gl.ARRAY_BUFFER, vertexPositionBuffer);
@@ -145,6 +151,10 @@ function initBuffers() {
 
     vertexPositionBuffer.itemSize = 3;
     vertexPositionBuffer.numItems = 5;
+}
+
+function glLoop(){
+    for(var x=0; x<40; x++) gl.pass();
 }
 
 var phase = 0;
@@ -180,9 +190,7 @@ function tick() {
 
 function webGLStart() {
 
-    var canvas = document.getElementById("webgl-canvas");
-
-    initGL(canvas); if(!gl) return;
+    initGL(); if(!gl) return;
     initShaders()
     initBuffers();
 

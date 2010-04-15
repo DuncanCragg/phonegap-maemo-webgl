@@ -62,7 +62,7 @@ void print_shader_info_log ( GLuint  shader)
 }
 
 
-GLuint load_shader(const char  *shader_source, GLenum type)
+GLuint getShader(const char  *shader_source, GLenum type)
 {
    GLuint  shader = glCreateShader( type );
 
@@ -89,8 +89,8 @@ GLint
 
 int initShaders()
 {
-   GLuint vertexShader   = load_shader ( vertex_src , GL_VERTEX_SHADER  );
-   GLuint fragmentShader = load_shader ( fragment_src , GL_FRAGMENT_SHADER );
+   GLuint vertexShader   = getShader( vertex_src , GL_VERTEX_SHADER  );
+   GLuint fragmentShader = getShader( fragment_src , GL_FRAGMENT_SHADER );
 
    GLuint shaderProgram  = glCreateProgram ();
    glAttachShader ( shaderProgram, vertexShader );
@@ -125,7 +125,6 @@ void drawScene()
    static int    donesetup = 0;
 
    if ( !donesetup ) {
-      glViewport ( 0 , 0 , 800, 480 );
       glClearColor ( 0.08 , 0.06 , 0.07 , 1.);
       donesetup = 1;
    }

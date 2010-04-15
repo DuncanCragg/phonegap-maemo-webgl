@@ -1,4 +1,3 @@
-//#include <QtDBus>
 
 #include <QtDebug>
 #include <QWebFrame>
@@ -15,6 +14,14 @@ GLES2::GLES2(QWebView *aWebView) : iWebView(aWebView)
 }
 
 extern bool GLPass();
+
+void GLES2::viewport(int x, int y, int w, int h){
+    glViewport(x, y, w, h);
+}
+
+int GLES2::createShader(int type){
+    return glCreateShader(type);
+}
 
 void GLES2::pass(){
     GLPass();
