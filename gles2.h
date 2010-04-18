@@ -14,6 +14,7 @@ public:
     GLES2(QWebView*);
 
 public slots:
+
     int FRAGMENT_SHADER(){ return GL_FRAGMENT_SHADER; };
     int VERTEX_SHADER(){   return GL_VERTEX_SHADER; };
 

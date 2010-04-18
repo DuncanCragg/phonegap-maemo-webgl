@@ -8,23 +8,12 @@
 
 static QWebView *gWebView = NULL;
 
-GLES2::GLES2(QWebView *aWebView) : iWebView(aWebView)
-{
-    gWebView = iWebView;
-}
+GLES2::GLES2(QWebView *aWebView) : iWebView(aWebView) { gWebView = iWebView; }
+
+void GLES2::viewport(int x, int y, int w, int h){ glViewport(x, y, w, h); }
+int  GLES2::createShader(int type){        return glCreateShader(type); }
 
 extern bool GLPass();
-
-void GLES2::viewport(int x, int y, int w, int h){
-    glViewport(x, y, w, h);
-}
-
-int GLES2::createShader(int type){
-    return glCreateShader(type);
-}
-
-void GLES2::pass(){
-    GLPass();
-}
+void GLES2::pass(){ GLPass(); }
 
 
