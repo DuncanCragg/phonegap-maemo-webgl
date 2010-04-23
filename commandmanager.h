@@ -50,12 +50,8 @@ class PGNetworkAccessManager : public QNetworkAccessManager
 	                const_cast<QNetworkRequest&>(request).setUrl(path);
 
 		} else {
-			// XXX: i am tired
 			QDir location = QDir("/usr/share/phonegapdemo");
 			path = QString("/usr/share/phonegapdemo");
-	                qDebug("Got path:%s", path.toAscii().data() );
-			qDebug("Got path2:%s", request.url().path().toAscii().data() );
-
 
 			QString path_prefix("/");
         	        path = path_prefix + request.url().path();
