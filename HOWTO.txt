@@ -61,7 +61,7 @@ Building X86 phonegap
 Recompile PhoneGap Javascript bundle when changed; run outside the SDK
 
  $ cd /scratchbox/users/<you>/home/<you>/phonegap-maemo-webgl
- $ ./mkjs.sh
+ $ ./mkjs.sh    # also updates www-example/phonegap.js with compressed JS
 
 =================================================================================================
 
