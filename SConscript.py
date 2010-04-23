@@ -2,7 +2,7 @@ import os
 from os.path import join, exists
 
 PHONEGAP_LIB        = "phonegap.js"
-PHONEGAP_COMPRESSED = "app.js"
+PHONEGAP_COMPRESSED = "phonegap-compressed.js"
 APPNAME = "PhoneGap"
 
 def CommandMakePhonegapJS(env, source, target):

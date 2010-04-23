@@ -13,6 +13,11 @@ Get set up with Maemo SDK @ http://wiki.maemo.org/Documentation/Maemo5_Final_Ins
 
 -------------------------------------------------------------------------------------------------
 
+ * Don't forget to run on reboot, as root:
+ $ /scratchbox/sbin/sbox_ctl start
+
+-------------------------------------------------------------------------------------------------
+
  $ /scratchbox/login
  $ cd phonegap-maemo-webgl
 
@@ -48,14 +53,15 @@ Building X86 phonegap
  $ qmake
  $ make
 
+ $ cp -a www-example www    # or however you want to make your www
+
  $ run-standalone.sh ./phonegap
 
 -------------------------------------------------------------------------------------------------
-Recompile Javascript when changed, outside the SDK
+Recompile PhoneGap Javascript bundle when changed; run outside the SDK
 
  $ cd /scratchbox/users/<you>/home/<you>/phonegap-maemo-webgl
- $ scons
- $ rm phonegap.js; mv app.js www
+ $ ./mkjs.sh
 
 =================================================================================================
 
@@ -97,8 +103,9 @@ Building X86 binaries and package - to test packaging without changing to ARMEL
 
 -------------------------------------------------------------------------------------------------
 
-Building your own application
+Building your own application distribution
 
+ * You've made your JS app in www
  * Create a copy of Distribution.mk
  * Edit headers as you see necessary for your application
  * Create copy of phonegapdemo.desktop
