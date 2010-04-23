@@ -9,3 +9,4 @@ phonegap
 *.pyc
 .scons*
 distribution
+doc/local
