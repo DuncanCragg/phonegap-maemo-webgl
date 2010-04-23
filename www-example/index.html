@@ -30,7 +30,7 @@
     </script>
 
   </head>
-  <body id="stage" class="theme" onload="init()">
+  <body id="stage" class="theme" onload="initDemo()">
       <div id="Page1">
         <div id="info" class="Panel"> <table>
             <tr>
@@ -49,14 +49,12 @@
           <dt>Y:</dt><dd id="y">&nbsp;</dd>
           <dt>Z:</dt><dd id="z">&nbsp;</dd>
         </dl>
+        <a href="#" class="btn"       onclick="deviceInfo();">Show Device Info</a>
         <a href="#" class="btn large" onclick="watchAccel();">Watch Accelerometer</a>
-        <a href="#" class="btn large" onclick="glLoop();">Start GL</a>
-        <a href="#" class="btn" onclick="customAlert();">Custom Alert</a>
-        <a href="#" class="btn" onclick="beep();">Beep</a>
-        <a href="#" class="btn" onclick="vibrate();">Vibrate</a>
-        <a href="#" class="btn" onclick="deviceInfo();">Get DeviceInfo</a>
-        <a href="http://127.0.0.1:8880/csi.html" class="btn" >csi</a>
-        <a href="http://www.google.com" class="btn" >google</a>
+        <a href="#" class="btn"       onclick="showAlert();" >Alert</a>
+        <a href="#" class="btn"       onclick="beep();"      >Beep</a>
+        <a href="#" class="btn"       onclick="vibrate();"   >Vibrate</a>
+        <a href="#" class="btn large" onclick="glLoop();"    >Start GL</a>
       </div>
       <canvas id="webgl-canvas" style="border: none;" width="80" height="48"></canvas>
   </body>

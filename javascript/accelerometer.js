@@ -3,10 +3,10 @@
  * @constructor
  */
 function Accelerometer() {
-	/**
-	 * The last known acceleration.
-	 */
-	this.lastAcceleration = null;
+    /**
+     * The last known acceleration.
+     */
+    this.lastAcceleration = null;
 }
 
 /**
@@ -21,16 +21,16 @@ function Accelerometer() {
 __PG_ACCELEROMETER_CALLBACK_USER = null;
 __PG_ACCELEROMETER_CALLBACK = function(x,y,z)
 {
-	var accel =  { x:x, y:y, z:z };
-	__PG_ACCELEROMETER_CALLBACK_USER(accel);
-	Accelerometer.lastAcceleration = accel;
+    var accel =  { x:x, y:y, z:z };
+    __PG_ACCELEROMETER_CALLBACK_USER(accel);
+    Accelerometer.lastAcceleration = accel;
 }
 
 Accelerometer.prototype.getCurrentAcceleration = function(successCallback, errorCallback, options) {
-	if (typeof successCallback == "function") {
-		_NativeAccelerometer.get();
-		__PG_ACCELEROMETER_CALLBACK_USER = successCallback;
-	}
+    if (typeof successCallback == "function") {
+        _NativeAccelerometer.get();
+        __PG_ACCELEROMETER_CALLBACK_USER = successCallback;
+    }
 }
 
 /**
@@ -44,12 +44,12 @@ Accelerometer.prototype.getCurrentAcceleration = function(successCallback, error
  */
 
 Accelerometer.prototype.watchAcceleration = function(successCallback, errorCallback, options) {
-	this.getCurrentAcceleration(successCallback, errorCallback, options);
-	// TODO: add the interval id to a list so we can clear all watches
- 	var frequency = (options != undefined)? options.frequency : 10000;
-	return setInterval(function() {
-		navigator.accelerometer.getCurrentAcceleration(successCallback, errorCallback, options);
-	}, frequency);
+    this.getCurrentAcceleration(successCallback, errorCallback, options);
+    // TODO: add the interval id to a list so we can clear all watches
+     var frequency = (options != undefined)? options.frequency : 10000;
+    return setInterval(function() {
+        navigator.accelerometer.getCurrentAcceleration(successCallback, errorCallback, options);
+    }, frequency);
 }
 
 /**
@@ -57,7 +57,7 @@ Accelerometer.prototype.watchAcceleration = function(successCallback, errorCallb
  * @param {String} watchId The ID of the watch returned from #watchAcceleration.
  */
 Accelerometer.prototype.clearWatch = function(watchId) {
-	clearInterval(watchId);
+    clearInterval(watchId);
 }
 
 if (typeof navigator.accelerometer == "undefined") navigator.accelerometer = new Accelerometer();

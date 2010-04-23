@@ -2,7 +2,7 @@
  * This class provides access to notifications on the device.
  */
 function Notification() {
-	
+    
 }
 
 /**
@@ -19,7 +19,7 @@ Notification.prototype.alert = function(message, title, buttonLabel) {
  * Start spinning the activity indicator on the statusbar
  */
 Notification.prototype.activityStart = function() {
-	
+    
 };
 
 /**
@@ -34,7 +34,7 @@ Notification.prototype.activityStop = function() {
  * @param {String} colour The colour of the light.
  */
 Notification.prototype.blink = function(count, colour) {
-	
+    
 };
 
 /**
@@ -42,7 +42,7 @@ Notification.prototype.blink = function(count, colour) {
  * @param {Integer} mills The number of milliseconds to vibrate for.
  */
 Notification.prototype.vibrate = function(mills) {
-	
+    
 };
 
 /**
@@ -51,7 +51,7 @@ Notification.prototype.vibrate = function(mills) {
  * @param {Integer} volume The volume of the beep.
  */
 Notification.prototype.beep = function(count, volume) {
-	
+    
 };
 
 

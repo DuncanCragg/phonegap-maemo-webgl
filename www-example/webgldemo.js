@@ -1,15 +1,39 @@
 
-//-------------PhoneGap-----------------------------------------------------
+//-------------Demonstrate PhoneGap Features -----------------------------------------
 
+function initDemo() {        
+    PhoneGap.addConstructor(function(){
+        document.addEventListener("touchmove", preventBehavior, false);
+        document.addEventListener('orientationChanged', function(e) { debug.log("Orientation changed to " + e.orientation); }, false);
+    });
+    webGLStart();
+}
+
+function preventBehavior(e) { e.preventDefault(); };
+ 
 function deviceInfo(){
-  document.getElementById("platform").innerHTML   = device.platform;
-  document.getElementById("version").innerHTML    = device.version;
-  document.getElementById("devicename").innerHTML = device.name;
-  document.getElementById("uuid").innerHTML       = device.uuid;
+    document.getElementById("platform").innerHTML   = device.platform;
+    document.getElementById("version").innerHTML    = device.version;
+    document.getElementById("devicename").innerHTML = device.name;
+    document.getElementById("uuid").innerHTML       = device.uuid;
 }
     
-function customAlert(){
-  navigator.notification.alert("This is an alert", "Alert");
+function watchAccel() {
+    var suc = function(a){
+        document.getElementById('x').innerHTML = roundNumber(a.x, 3);
+        document.getElementById('y').innerHTML = roundNumber(a.y, 3);
+        document.getElementById('z').innerHTML = roundNumber(a.z, 3);
+    };
+    var fail = function(){};
+    var opt = {};
+    opt.frequency = 500;
+    timer = navigator.accelerometer.watchAcceleration(suc,fail,opt);
+}
+      
+function roundNumber(num, dec) { return Math.round(num*Math.pow(10,dec))/Math.pow(10,dec); }
+
+function showAlert(){
+    navigator.notification.alert("This is an alert", "Alert");
 }
   
 function beep(){
@@ -22,33 +46,13 @@ function vibrate(){
   navigator.notification.vibrate(0);
 }
   
-function watchAccel() {
-  var suc = function(a){
-    document.getElementById('x').innerHTML = roundNumber(a.x, 3);
-    document.getElementById('y').innerHTML = roundNumber(a.y, 3);
-    document.getElementById('z').innerHTML = roundNumber(a.z, 3);
-  };
-  var fail = function(){};
-  var opt = {};
-  opt.frequency = 500;
-  timer = navigator.accelerometer.watchAcceleration(suc,fail,opt);
-}
-      
-function roundNumber(num, dec) { return Math.round(num*Math.pow(10,dec))/Math.pow(10,dec); }
-
-function init() {        
-    PhoneGap.addConstructor(function(){
-      document.addEventListener("touchmove", preventBehavior, false);
-      document.addEventListener('orientationChanged', function(e) { debug.log("Orientation changed to " + e.orientation); }, false);
-    });
-    webGLStart();
-}
-
-function preventBehavior(e) { e.preventDefault(); };
- 
 //-------------WebGL--------------------------------------------------------
 
 var gl;
+
+function glLoop(){
+    for(var x=0; x<40; x++) gl.pass();
+}
 
 function initGL() {
     var w,h;
@@ -151,10 +155,6 @@ function initBuffers() {
 
     vertexPositionBuffer.itemSize = 3;
     vertexPositionBuffer.numItems = 5;
-}
-
-function glLoop(){
-    for(var x=0; x<40; x++) gl.pass();
 }
 
 var phase = 0;

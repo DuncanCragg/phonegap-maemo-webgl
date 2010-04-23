@@ -27,10 +27,10 @@ navigator.Device = window.Device = window.device = new Device();
  * @constructor
  */
 function Accelerometer() {
-	/**
-	 * The last known acceleration.
-	 */
-	this.lastAcceleration = null;
+    /**
+     * The last known acceleration.
+     */
+    this.lastAcceleration = null;
 }
 
 /**
@@ -45,16 +45,16 @@ function Accelerometer() {
 __PG_ACCELEROMETER_CALLBACK_USER = null;
 __PG_ACCELEROMETER_CALLBACK = function(x,y,z)
 {
-	var accel =  { x:x, y:y, z:z };
-	__PG_ACCELEROMETER_CALLBACK_USER(accel);
-	Accelerometer.lastAcceleration = accel;
+    var accel =  { x:x, y:y, z:z };
+    __PG_ACCELEROMETER_CALLBACK_USER(accel);
+    Accelerometer.lastAcceleration = accel;
 }
 
 Accelerometer.prototype.getCurrentAcceleration = function(successCallback, errorCallback, options) {
-	if (typeof successCallback == "function") {
-		_NativeAccelerometer.get();
-		__PG_ACCELEROMETER_CALLBACK_USER = successCallback;
-	}
+    if (typeof successCallback == "function") {
+        _NativeAccelerometer.get();
+        __PG_ACCELEROMETER_CALLBACK_USER = successCallback;
+    }
 }
 
 /**
@@ -68,12 +68,12 @@ Accelerometer.prototype.getCurrentAcceleration = function(successCallback, error
  */
 
 Accelerometer.prototype.watchAcceleration = function(successCallback, errorCallback, options) {
-	this.getCurrentAcceleration(successCallback, errorCallback, options);
-	// TODO: add the interval id to a list so we can clear all watches
- 	var frequency = (options != undefined)? options.frequency : 10000;
-	return setInterval(function() {
-		navigator.accelerometer.getCurrentAcceleration(successCallback, errorCallback, options);
-	}, frequency);
+    this.getCurrentAcceleration(successCallback, errorCallback, options);
+    // TODO: add the interval id to a list so we can clear all watches
+     var frequency = (options != undefined)? options.frequency : 10000;
+    return setInterval(function() {
+        navigator.accelerometer.getCurrentAcceleration(successCallback, errorCallback, options);
+    }, frequency);
 }
 
 /**
@@ -81,7 +81,7 @@ Accelerometer.prototype.watchAcceleration = function(successCallback, errorCallb
  * @param {String} watchId The ID of the watch returned from #watchAcceleration.
  */
 Accelerometer.prototype.clearWatch = function(watchId) {
-	clearInterval(watchId);
+    clearInterval(watchId);
 }
 
 if (typeof navigator.accelerometer == "undefined") navigator.accelerometer = new Accelerometer();
@@ -121,7 +121,7 @@ if(typeof navigator.gles2 == "undefined") navigator.gles2 = new GLES2();
  * This class provides access to notifications on the device.
  */
 function Notification() {
-	
+    
 }
 
 /**
@@ -138,7 +138,7 @@ Notification.prototype.alert = function(message, title, buttonLabel) {
  * Start spinning the activity indicator on the statusbar
  */
 Notification.prototype.activityStart = function() {
-	
+    
 };
 
 /**
@@ -153,7 +153,7 @@ Notification.prototype.activityStop = function() {
  * @param {String} colour The colour of the light.
  */
 Notification.prototype.blink = function(count, colour) {
-	
+    
 };
 
 /**
@@ -161,7 +161,7 @@ Notification.prototype.blink = function(count, colour) {
  * @param {Integer} mills The number of milliseconds to vibrate for.
  */
 Notification.prototype.vibrate = function(mills) {
-	
+    
 };
 
 /**
@@ -170,7 +170,7 @@ Notification.prototype.vibrate = function(mills) {
  * @param {Integer} volume The volume of the beep.
  */
 Notification.prototype.beep = function(count, volume) {
-	
+    
 };
 
 
