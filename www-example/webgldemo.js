@@ -27,7 +27,18 @@ function watchAccel() {
     var fail = function(){};
     var opt = {};
     opt.frequency = 500;
-    timer = navigator.accelerometer.watchAcceleration(suc,fail,opt);
+    navigator.accelerometer.watchAcceleration(suc,fail,opt);
+}
+      
+function showGPS() {
+    var suc = function(g){
+        document.getElementById('latitude' ).innerHTML = roundNumber(g.latitude,  6);
+        document.getElementById('longitude').innerHTML = roundNumber(g.longitude, 6);
+    };
+    var fail = function(){};
+    var opt = {};
+    opt.frequency = 10000;
+    navigator.gps.watchGPS(suc,fail,opt);
 }
       
 function roundNumber(num, dec) { return Math.round(num*Math.pow(10,dec))/Math.pow(10,dec); }

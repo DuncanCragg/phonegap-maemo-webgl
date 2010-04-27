@@ -28,6 +28,9 @@ void WebView::initJavascript( )
     iAccelerometer= new Accelerometer(this);
     frame->addToJavaScriptWindowObject(s("_NativeAccelerometer"), iAccelerometer);
 
+    iGPS = new GPS(this);
+    frame->addToJavaScriptWindowObject(s("_NativeGPS"), iGPS);
+
     iNotification = new Notification( );
     frame->addToJavaScriptWindowObject(s("_NativeNotification"), iNotification);
 
@@ -48,6 +51,7 @@ WebView::~WebView()
     delete iDeviceInfo;
     delete iDebug;
     delete iAccelerometer;
+    delete iGPS;
     delete iNotification;
     delete iGLES2;
 }

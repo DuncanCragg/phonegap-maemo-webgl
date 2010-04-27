@@ -8,7 +8,13 @@ __PG_ACCELEROMETER_CALLBACK_USER=null;__PG_ACCELEROMETER_CALLBACK=function(x,y,z
 Accelerometer.prototype.getCurrentAcceleration=function(successCallback,errorCallback,options){if(typeof successCallback=="function"){_NativeAccelerometer.get();__PG_ACCELEROMETER_CALLBACK_USER=successCallback;}}
 Accelerometer.prototype.watchAcceleration=function(successCallback,errorCallback,options){this.getCurrentAcceleration(successCallback,errorCallback,options);var frequency=(options!=undefined)?options.frequency:10000;return setInterval(function(){navigator.accelerometer.getCurrentAcceleration(successCallback,errorCallback,options);},frequency);}
 Accelerometer.prototype.clearWatch=function(watchId){clearInterval(watchId);}
-if(typeof navigator.accelerometer=="undefined")navigator.accelerometer=new Accelerometer();if(typeof _NativeGLES2!="undefined"){function GLES2(){}
+if(typeof navigator.accelerometer=="undefined")navigator.accelerometer=new Accelerometer();function GPS(){this.lastCoordinates=null;}
+__PG_GPS_CALLBACK_USER=null;__PG_GPS_CALLBACK=function(latitude,longitude)
+{var coords={latitude:latitude,longitude:longitude,};__PG_GPS_CALLBACK_USER(coords);GPS.lastCoordinates=coords;}
+GPS.prototype.getCurrentCoordinates=function(successCallback,errorCallback,options){if(typeof successCallback=="function"){_NativeGPS.get();__PG_GPS_CALLBACK_USER=successCallback;}}
+GPS.prototype.watchGPS=function(successCallback,errorCallback,options){this.getCurrentCoordinates(successCallback,errorCallback,options);var frequency=(options!=undefined)?options.frequency:10000;return setInterval(function(){navigator.gps.getCurrentCoordinates(successCallback,errorCallback,options);},frequency);}
+GPS.prototype.clearWatch=function(watchId){clearInterval(watchId);}
+if(typeof navigator.gps=="undefined")navigator.gps=new GPS();if(typeof _NativeGLES2!="undefined"){function GLES2(){}
 GLES2.prototype.FRAGMENT_SHADER=_NativeGLES2.FRAGMENT_SHADER();GLES2.prototype.VERTEX_SHADER=_NativeGLES2.VERTEX_SHADER();GLES2.prototype.viewport=function(x,y,w,h){_NativeGLES2.viewport(x,y,w,h);}
 GLES2.prototype.createShader=function(type){return _NativeGLES2.createShader(type);}
 GLES2.prototype.pass=function(){_NativeGLES2.pass();}

@@ -10,7 +10,7 @@ INCLUDEPATH += /usr/include/dbus-1.0/
 INCLUDEPATH += /usr/include/glib-2.0/
 INCLUDEPATH += .
 
-LIBS += -lX11 -lEGL -lGLESv2
+LIBS += -lX11 -lEGL -lGLESv2 -llocation
 QMAKE_LFLAGS += -Wl,-rpath-link,/opt/qt4-maemo5/lib -Wl,-rpath,/opt/qt4-maemo5/lib
 
 
@@ -20,6 +20,7 @@ SOURCES += main.cpp NativeExample.cpp \
     webview.cpp \
     debug.cpp \
     accelerometer.cpp \
+    gps.cpp \
     gles2.cpp \
     notification.cpp
 QT += webkit
@@ -31,6 +32,7 @@ HEADERS += commandmanager.h \
     utils.h \
     debug.h \
     accelerometer.h \
+    gps.h \
     gles2.h \
     notification.h
 OTHER_FILES += index.html

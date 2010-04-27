@@ -27,6 +27,7 @@ jssources = [
     "phonegap.js",
     "device.js",
     "accelerometer.js",
+    "gps.js",
     "gles2.js",
     "notification.js"
 ]

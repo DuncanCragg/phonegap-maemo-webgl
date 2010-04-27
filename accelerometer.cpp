@@ -4,6 +4,8 @@
 #include <QWebFrame>
 #include <QWebPage>
 
+#include <dbus/dbus-glib.h>
+
 #include "utils.h"
 #include "accelerometer.h"
 
@@ -27,7 +29,6 @@ static void AccelerometerCallback(DBusGProxy *proxy, DBusGProxyCall *call, void 
 {
   gchar *s1, *s2, *s3;
   gint x, y, z;
-  gchar facing = 0;
 
   if (dbus_g_proxy_end_call (proxy, call, NULL,
                              G_TYPE_STRING, &s1,

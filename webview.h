@@ -9,6 +9,7 @@
 #include "deviceinfo.h"
 #include "debug.h"
 #include "accelerometer.h"
+#include "gps.h"
 #include "notification.h"
 #include "gles2.h"
 
@@ -31,6 +32,7 @@ private:
      DeviceInfo *iDeviceInfo;
      Debug *iDebug;
      Accelerometer *iAccelerometer;
+     GPS *iGPS;
      Notification *iNotification;
      GLES2 *iGLES2;
 };
